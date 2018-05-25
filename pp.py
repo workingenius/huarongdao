@@ -146,19 +146,35 @@ class LayoutPrinter(object):
         return self.format()
 
 
-def print_layout(game: Game, layout: Layout, gap=None):
-    lp = LayoutPrinter(game.width, game.height)
+class ChineseLayoutPrinter(LayoutPrinter):
+    CHAR_CONNER = '+'
+    CHAR_SIDE_HOR = '--'
+    CHAR_SIDE_HOR_0 = '  '
+    CHAR_SIDE_VER = '|'
+    CHAR_SIDE_VER_0 = ' '
+    CHAR_CONTENT_0 = '  '
+
+
+def print_layout(game: Game, layout: Layout, gap=None, chinese=True):
+    lp_cls = ChineseLayoutPrinter if chinese else LayoutPrinter
+    lp = lp_cls(game.width, game.height)
 
     # 补充上所有的格子
-    for block in layout:
-        lp.add_grids(block)
+    if chinese:
+        for block in layout:
+            lp.add_grids(block, cap=block.cap)
+    else:
+        for block in layout:
+            lp.add_grids(block)
 
     # 计算并补充上空格子
-    empties = set(game.all_grids())
-    for block in layout:
-        empties = empties - block
-    for empty_grid in empties:
-        lp.add_grids([empty_grid], cap='0')
+    if not chinese:
+        empties = set(game.all_grids())
+        for block in layout:
+            empties = empties - block
+
+        for empty_grid in empties:
+            lp.add_grids([empty_grid], cap='0')
 
     print(lp.format())
     if gap is not None:
@@ -196,18 +212,18 @@ def print_layout(game: Game, layout: Layout, gap=None):
 
 if __name__ == '__main__':
     g = Game()
-    print_layout(g, g.initial)
+    print_layout(g, g.initial, chinese=False)
 
     print()
     print()
 
     print_layout(g, L(
         B(G(0, 0), G(0, 1), G(1, 0), G(1, 1))
-    ))
+    ), chinese=False)
 
     print()
     print()
 
     print_layout(g, L(
         B(G(1, 3), G(2, 3), G(1, 4), G(2, 4))
-    ))
+    ), chinese=False)
