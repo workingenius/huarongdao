@@ -186,9 +186,10 @@ def solve(game):
     known_layouts = set(layout_q)
     layout_from = {}  # {to: (from, block, move)}
 
+    print('正在搜索 请稍候')
+
     while layout_q:
         cur_layout = layout_q.pop(0)
-        print(len(layout_q))
 
         if game.is_done(cur_layout):
             cnt = 0
@@ -199,7 +200,7 @@ def solve(game):
                 print(str(b) + str(m))
                 cnt += 1
             print_layout(game, l)
-            print(cnt)
+            print('\n共 {n} 步 请倒序查看'.format(n=cnt))
             break
 
         for block in cur_layout:
