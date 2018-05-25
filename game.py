@@ -158,10 +158,11 @@ def solve(game):
             cnt = 0
             l = cur_layout
             while l in layout_from:
-                print_layout(game, l)
+                print_layout(game, l, gap='')
                 l, m = layout_from[l]
                 # print(m)
                 cnt += 1
+            print_layout(game, l)
             print(cnt)
             break
 

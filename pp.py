@@ -133,7 +133,7 @@ class LayoutPrinter(object):
         return self.format()
 
 
-def print_layout(game: Game, layout: Layout):
+def print_layout(game: Game, layout: Layout, gap=None):
     lp = LayoutPrinter(game.width, game.height)
 
     # 补充上所有的格子
@@ -148,6 +148,8 @@ def print_layout(game: Game, layout: Layout):
         lp.add_grids([empty_grid], cap='0')
 
     print(lp.format())
+    if gap is not None:
+        print(gap)
 
 
 """
