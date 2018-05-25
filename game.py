@@ -200,7 +200,7 @@ def solve(game):
                 print(str(b) + str(m))
                 cnt += 1
             print_layout(game, l)
-            print('\n共 {n} 步 请倒序查看'.format(n=cnt))
+            print('\n解{title} 共 {n} 步 请倒序查看'.format(title=game.title, n=cnt))
             break
 
         for block in cur_layout:
