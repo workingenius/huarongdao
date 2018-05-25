@@ -64,6 +64,12 @@ class Block(frozenset):
         else:
             self.caption = ''
 
+    def __str__(self):
+        if self.caption:
+            return self.caption
+        else:
+            return super(Block, self).__str__()
+
 
 B = Block
 
@@ -141,7 +147,7 @@ def move_block(game, layout, block, move):
     返回移动后的 layout
     如果不能移动 则返回 None
     """
-    nblock = B(*[move_to(g, move) for g in block])
+    nblock = B(*[move_to(g, move) for g in block], cap=block.caption)
     nlayout = L(*[b for b in layout if b != block] + [nblock])
 
     # 移动之后如果 block 数量变少 则不能移动
@@ -159,7 +165,7 @@ def solve(game):
 
     layout_q = [game.initial]
     known_layouts = set(layout_q)
-    layout_from = {}  # {to: (from, move)}
+    layout_from = {}  # {to: (from, block, move)}
 
     while layout_q:
         cur_layout = layout_q.pop(0)
@@ -170,8 +176,8 @@ def solve(game):
             l = cur_layout
             while l in layout_from:
                 print_layout(game, l, gap='')
-                l, m = layout_from[l]
-                print(m)
+                l, b, m = layout_from[l]
+                print(str(b) + str(m))
                 cnt += 1
             print_layout(game, l)
             print(cnt)
@@ -191,7 +197,7 @@ def solve(game):
 
                         layout_q.append(nlayout)
                         known_layouts.add(nlayout)
-                        layout_from[nlayout] = (cur_layout, move)
+                        layout_from[nlayout] = (cur_layout, block, move)
 
                         # sleep(3)
 
