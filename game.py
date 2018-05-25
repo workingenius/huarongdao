@@ -60,13 +60,32 @@ class Block(frozenset):
 
     def __init__(self, *grids, **kwargs):
         if 'cap' in kwargs:
-            self.caption = kwargs['cap']
+            self.cap = kwargs['cap']
         else:
-            self.caption = ''
+            self.cap = ''
+
+        if 'adj' in kwargs:
+            self.adj = kwargs['adj']
+        else:
+            if len(self) == 1:
+                self.adj = '小'
+            elif len(self) == 2:
+                if len(set(g[0] for g in self)) == 1:
+                    self.adj = '站'
+                elif len(set(g[1] for g in self)) == 1:
+                    self.adj = '矮'
+                else:
+                    self.adj = '分'
+            elif len(self) == 3:
+                self.adj = '怪'
+            elif len(self) == 4:
+                self.adj = '大'
+            elif len(self) > 4:
+                self.adj = '巨'
 
     def __str__(self):
-        if self.caption:
-            return self.caption
+        if self.cap:
+            return self.adj + self.cap
         else:
             return super(Block, self).__str__()
 
@@ -147,7 +166,7 @@ def move_block(game, layout, block, move):
     返回移动后的 layout
     如果不能移动 则返回 None
     """
-    nblock = B(*[move_to(g, move) for g in block], cap=block.caption)
+    nblock = B(*[move_to(g, move) for g in block], cap=block.cap, adj=block.adj)
     nlayout = L(*[b for b in layout if b != block] + [nblock])
 
     # 移动之后如果 block 数量变少 则不能移动
