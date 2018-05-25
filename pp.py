@@ -62,7 +62,7 @@ class LayoutPrinter(object):
         self.sides = self.sides | border
 
         # 在第一个格子里 记录下格子说明
-        grid = list(grids)[0]
+        grid = sorted(list(grids))[0]
         self.caps[grid] = cap
 
     def format(self):
