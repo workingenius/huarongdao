@@ -7,6 +7,7 @@
 # Layout = FrozenSet[Block]  # 布局
 #
 # Move = Tuple[int, int]  # 走一步
+from time import sleep
 
 
 class Grid(tuple):
@@ -124,9 +125,29 @@ class Game(object):
             return False
 
 
+def move_block(game, layout, block, move):
+    """把 {layout} 当中的 {block} 按照 {move} 所指进行移动
+    返回移动后的 layout
+    如果不能移动 则返回 None
+    """
+    nblock = B(*[move_to(g, move) for g in block])
+    nlayout = L(*[b for b in layout if b != block] + [nblock])
+
+    # 移动之后如果 block 数量变少 则不能移动
+    if len(nlayout) != len(layout):
+        return
+
+    if game.is_valid_layout(nlayout):
+        return nlayout
+    else:
+        return
+
+
 def solve(game):
+    from pp import print_layout
+
     layout_q = [game.initial]
-    known_layouts = set()
+    known_layouts = set(layout_q)
     layout_from = {}  # {to: (from, move)}
 
     while layout_q:
@@ -137,23 +158,30 @@ def solve(game):
             cnt = 0
             l = cur_layout
             while l in layout_from:
+                print_layout(game, l)
                 l, m = layout_from[l]
-                print(m)
+                # print(m)
                 cnt += 1
             print(cnt)
+            break
 
         for block in cur_layout:
             for move in steps:
-                nblock = B(*[move_to(g, move) for g in block])
-                nlayout = L(*[b for b in cur_layout if b != block] + [nblock])
+                nlayout = move_block(game, cur_layout, block, move)
 
-                if game.is_valid_layout(nlayout):
+                if nlayout:
                     if nlayout in known_layouts:
                         pass
                     else:
+                        # print_layout(game, cur_layout)
+                        # print_layout(game, nlayout)
+                        # print('#' * 10)
+
                         layout_q.append(nlayout)
                         known_layouts.add(nlayout)
                         layout_from[nlayout] = (cur_layout, move)
+
+                        # sleep(3)
 
 
 if __name__ == '__main__':
