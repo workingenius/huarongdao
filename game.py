@@ -11,25 +11,19 @@ from time import sleep
 
 
 class Grid(tuple):
-    pass
+    def __new__(cls, x, y):
+        assert isinstance(x, int)
+        assert isinstance(y, int)
+        return super(Grid, cls).__new__(cls, [x, y])
+
+    def x(self):
+        return self[0]
+
+    def y(self):
+        return self[1]
 
 
-def G(x, y):
-    assert isinstance(x, int)
-    assert isinstance(y, int)
-    return Grid([x, y])
-
-
-def Gx(g: Grid):
-    return g[0]
-
-
-def Gy(g: Grid):
-    return g[1]
-
-
-G.x = Gx
-G.y = Gy
+G = Grid
 
 
 class Move(tuple):
@@ -60,21 +54,27 @@ steps = [
 
 
 class Block(frozenset):
-    pass
+    def __new__(cls, *grids, **kwargs):
+        assert all(map(lambda x: isinstance(x, Grid), grids))
+        return super(Block, cls).__new__(cls, grids)
+
+    def __init__(self, *grids, **kwargs):
+        if 'cap' in kwargs:
+            self.caption = kwargs['cap']
+        else:
+            self.caption = ''
 
 
-def B(*grids):
-    assert all(map(lambda x: isinstance(x, Grid), grids))
-    return Block(grids)
+B = Block
 
 
 class Layout(frozenset):
-    pass
+    def __new__(cls, *blocks):
+        assert all(map(lambda x: isinstance(x, Block), blocks))
+        return super(Layout, cls).__new__(cls, blocks)
 
 
-def L(*blocks):
-    assert all(map(lambda x: isinstance(x, Block), blocks))
-    return Layout(blocks)
+L = Layout
 
 
 def move_to(grid: Grid, move: Move) -> Grid:
