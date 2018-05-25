@@ -1,0 +1,167 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+offline/tests/*
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+
+#Mac Dir
+.DS_Store
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+#redis
+dump.rdb
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject
+
+# Rope project settings
+.ropeproject
+
+# IDE
+.idea
+
+# Frontend
+node_modules
+bower_components
+.tmp
+
+# swp files
+*.swp
+
+# temp file
+*.tmp
+
+# RPM
+/*.rpm
+
+#test
+test.*
+trytest.*
+
+#offline
+offline/out/*
+offline/files/*
+
+cie/afl/*
+image_processing/*
+offline/input/*
+logs/*
+cie_dcl
+tools/extracter_model/test/*
+tools/extracter_model/bl_new_model.*
+tools/extracter_model/test/
+tools/extracter_model/test/hualiao.model
+tools/extracter_model/test/hualiao_conf.yaml
+tools/extracter_model/test_hualiao_model.py
+core/utils/extracter_model/bl_new_model.*
+core/utils/extracter_model/test/*
+report/*
+requirements.dev.txt
+
+# sometimes nohup boot in debugging
+nohup.out
+
+# django collect static
+/static
+
+# frontend libs
+node_modules
+bower_components
+
+# runit 
+supervise
+current
+lock
+@*.s
+
+# env
+
+env*.sh
+!env*.prod.sh
+!env*.pre.sh
+!env*.dev.sh
+!env*.dk-debug.sh
+!env*.debug.sh
+
+.bv
+.Rhistory
+
+code.tgz
