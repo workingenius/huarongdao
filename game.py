@@ -19,12 +19,32 @@ def G(x, y):
     return Grid([x, y])
 
 
+def Gx(g: Grid):
+    return g[0]
+
+
+def Gy(g: Grid):
+    return g[1]
+
+
+G.x = Gx
+G.y = Gy
+
+
 class Move(tuple):
     pass
 
 
 def M(x, y):
     return Move([x, y])
+
+
+steps = [
+    M(1, 0),  # 右
+    M(-1, 0),  # 左
+    M(0, 1),  # 上
+    M(0, -1)  # 下
+]
 
 
 class Block(frozenset):
@@ -60,7 +80,7 @@ class Game(object):
         B(G(1, 1)),
         B(G(2, 1)),
         B(G(3, 1), G(3, 2)),
-        B(G(1, 3), G(2, 3)),
+        B(G(1, 2), G(2, 2)),
         B(G(0, 3), G(0, 4)),
         B(G(1, 3), G(2, 3), G(1, 4), G(2, 4)),
         B(G(3, 3), G(3, 4))
@@ -104,13 +124,6 @@ def solve(game):
     known_layouts = set()
     layout_from = {}  # {to: (from, move)}
 
-    moves = [
-        M(1, 0),  # 右
-        M(-1, 0),  # 左
-        M(0, 1),  # 上
-        M(0, -1)  # 下
-    ]
-
     while layout_q:
         cur_layout = layout_q.pop(0)
         print(len(layout_q))
@@ -125,7 +138,7 @@ def solve(game):
             print(cnt)
 
         for block in cur_layout:
-            for move in moves:
+            for move in steps:
                 nblock = B(*[move_to(g, move) for g in block])
                 nlayout = L(*[b for b in cur_layout if b != block] + [nblock])
 
