@@ -33,11 +33,22 @@ G.y = Gy
 
 
 class Move(tuple):
-    pass
+    def __new__(cls, x, y):
+        return super(Move, cls).__new__(cls, [x, y])
+
+    def __str__(self):
+        x, y = self
+        if x == 0 and y > 0:
+            return '向上'
+        if x == 0 and y < 0:
+            return '向下'
+        if x > 0 and y == 0:
+            return '向右'
+        if x < 0 and y == 0:
+            return '向左'
 
 
-def M(x, y):
-    return Move([x, y])
+M = Move
 
 
 steps = [
@@ -160,7 +171,7 @@ def solve(game):
             while l in layout_from:
                 print_layout(game, l, gap='')
                 l, m = layout_from[l]
-                # print(m)
+                print(m)
                 cnt += 1
             print_layout(game, l)
             print(cnt)
