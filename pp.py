@@ -24,6 +24,13 @@ def even(i):
 
 
 class LayoutPrinter(object):
+    CHAR_CONNER = '+'
+    CHAR_SIDE_HOR = '-'
+    CHAR_SIDE_HOR_0 = ' '
+    CHAR_SIDE_VER = '|'
+    CHAR_SIDE_VER_0 = ' '
+    CHAR_CONTENT_0 = ' '
+
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
@@ -93,7 +100,7 @@ class LayoutPrinter(object):
 
             row = []
             for i in range(w):
-                row.append(' ')
+                row.append(None)
 
             array.append(row)
 
@@ -112,20 +119,26 @@ class LayoutPrinter(object):
             for i, char in enumerate(row):
                 # 格子角
                 if even(j) and even(i):
-                    array[j][i] = '+'
+                    array[j][i] = self.CHAR_CONNER
 
                 # 格子中间
                 elif odd(j) and odd(i):
-                    pass
+                    if array[j][i] is None:
+                        array[j][i] = self.CHAR_CONTENT_0
 
                 # 格子竖边
                 elif odd(j) and even(i):
                     if (i, j) in side_poss:
-                        array[j][i] = '|'
+                        array[j][i] = self.CHAR_SIDE_VER
+                    else:
+                        array[j][i] = self.CHAR_SIDE_VER_0
 
+                # 格子横边
                 elif even(j) and odd(i):
                     if (i, j) in side_poss:
-                        array[j][i] = '-'
+                        array[j][i] = self.CHAR_SIDE_HOR
+                    else:
+                        array[j][i] = self.CHAR_SIDE_HOR_0
 
         return '\n'.join(reversed([''.join(row) for row in array]))
 
@@ -137,8 +150,8 @@ def print_layout(game: Game, layout: Layout, gap=None):
     lp = LayoutPrinter(game.width, game.height)
 
     # 补充上所有的格子
-    for blocks in layout:
-        lp.add_grids(blocks)
+    for block in layout:
+        lp.add_grids(block)
 
     # 计算并补充上空格子
     empties = set(game.all_grids())
@@ -155,6 +168,20 @@ def print_layout(game: Game, layout: Layout, gap=None):
 """
 +-+-+-+-+
 | |   | |
++ + + + +
+| |   | |
++-+-+-+-+
+| |   | |
++ +-+-+ +
+| | | | |
++-+-+-+-+
+| |0|0| |
++-+-+-+-+
+"""
+
+"""
++--+-+-+-+
+|张|   | |
 + + + + +
 | |   | |
 +-+-+-+-+
