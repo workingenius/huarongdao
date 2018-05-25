@@ -142,6 +142,25 @@ class Game7(Game):
     )
 
 
+class Game98(Game):
+    title = '逗逼n国'
+
+    width = 5
+    height = 5
+
+    initial = L(
+        B(G(1, 3), G(2, 3), G(1, 4), G(2, 4), cap='曹'),
+        B(G(0, 3), cap='董'),
+        B(G(0, 2), G(0, 1), G(1, 2), cap='刘'),
+        B(G(3, 2), G(4, 2), cap='吕'),
+        B(G(3, 3), cap='陶'),
+        B(G(4, 3), G(3, 4), G(4, 4), cap='袁'),
+        B(G(3, 0), G(4, 1), G(4, 0), cap='孙'),
+        B(G(1, 0), G(1, 1), cap='晋'),
+        B(G(0, 4), cap='马')
+    )
+
+
 class Game99(Game):
     title = '逗逼三国'
 
