@@ -142,6 +142,20 @@ class Game7(Game):
     )
 
 
+class Game99(Game):
+    title = '逗逼三国'
+
+    width = 5
+    height = 5
+
+    initial = L(
+        B(G(1, 3), G(2, 3), G(1, 4), G(2, 4), cap='曹'),
+        B(G(0, 2), G(0, 3), G(1, 2), G(1, 1), cap='刘'),
+        B(G(3, 1), G(3, 2), G(4, 1), G(2, 1), G(3, 0), cap='孙'),
+        # B(G(4, 3), cap='袁')
+    )
+
+
 if __name__ == '__main__':
     import sys
     num = sys.argv[1]

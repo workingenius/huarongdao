@@ -220,6 +220,9 @@ def solve(game):
                         layout_from[nlayout] = (cur_layout, block, move)
 
                         # sleep(3)
+    else:
+        print_layout(game, game.initial)
+        print('死路一条')
 
 
 if __name__ == '__main__':
