@@ -88,6 +88,11 @@ class Game(object):
 
     exit = B(G(1, 0), G(2, 0), G(1, 1), G(2, 1))
 
+    def all_grids(self):
+        for w in range(self.width):
+            for h in range(self.height):
+                yield G(w, h)
+
     def is_done(self, layout: Layout):
         u"""胖曹是否走出去了"""
         return self.exit in layout

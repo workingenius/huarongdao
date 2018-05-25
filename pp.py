@@ -30,6 +30,8 @@ class LayoutPrinter(object):
 
         # 要画的边
         self.sides = set()
+        # 要画的格子说明
+        self.caps = {}  # {grid: cap}
 
     def add_grids(self, grids, cap=' '):
         # caption 必须是一个字符长度的 ascii 字符串
@@ -52,6 +54,10 @@ class LayoutPrinter(object):
         # 把边界添加到要画的边里
         self.sides = self.sides | border
 
+        # 在第一个格子里 记录下格子说明
+        grid = list(grids)[0]
+        self.caps[grid] = cap
+
     def format(self):
 
         def side_pos(side):
@@ -65,6 +71,17 @@ class LayoutPrinter(object):
             """
             gs = list(side)
             return sum(map(G.x, gs)) + 1, sum(map(G.y, gs)) + 1
+
+        def grid_pos(grid):
+            """计算出格子中央在字符阵列中的位置
+
+            (0,0) -> (1,1)
+            (1,0) -> (3,1)
+            (1,1) -> (3,3)
+
+            (x,y) -> (2x+1, 2y+1)
+            """
+            return 2 * G.x(grid) + 1, 2 * G.y(grid) + 1
 
         # 字符点阵的总大小
         w = self.width * 2 + 1
@@ -84,6 +101,12 @@ class LayoutPrinter(object):
         side_poss = set()
         for side in self.sides:
             side_poss.add(side_pos(side))
+
+        # 把要画的格子说明 转化为点阵中的位置
+        # 并画在阵列上
+        for grid, cap in self.caps.items():
+            x, y = grid_pos(grid)
+            array[y][x] = cap
 
         for j, row in enumerate(array):
             for i, char in enumerate(row):
@@ -113,8 +136,16 @@ class LayoutPrinter(object):
 def print_layout(game: Game, layout: Layout):
     lp = LayoutPrinter(game.width, game.height)
 
+    # 补充上所有的格子
     for blocks in layout:
         lp.add_grids(blocks)
+
+    # 计算并补充上空格子
+    empties = set(game.all_grids())
+    for block in layout:
+        empties = empties - block
+    for empty_grid in empties:
+        lp.add_grids([empty_grid], cap='0')
 
     print(lp.format())
 
