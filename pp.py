@@ -62,7 +62,7 @@ class LayoutPrinter(object):
         self.sides = self.sides | border
 
         # 在第一个格子里 记录下格子说明
-        grid = sorted(list(grids))[0]
+        grid = sorted(list(grids), key=lambda g: (g.x, g.y))[0]
         self.caps[grid] = cap
 
     def format(self):
@@ -77,7 +77,7 @@ class LayoutPrinter(object):
             [(x0,y0),(x1,y1)] -> (x0+x1+1, y0+y1+1)
             """
             gs = list(side)
-            return sum(map(G.x, gs)) + 1, sum(map(G.y, gs)) + 1
+            return sum(map(lambda g: g.x, gs)) + 1, sum(map(lambda g: g.y, gs)) + 1
 
         def grid_pos(grid):
             """计算出格子中央在字符阵列中的位置
@@ -88,7 +88,7 @@ class LayoutPrinter(object):
 
             (x,y) -> (2x+1, 2y+1)
             """
-            return 2 * G.x(grid) + 1, 2 * G.y(grid) + 1
+            return 2 * grid.x + 1, 2 * grid.y + 1
 
         # 字符点阵的总大小
         w = self.width * 2 + 1

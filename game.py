@@ -10,17 +10,18 @@
 from time import sleep
 
 
-class Grid(tuple):
-    def __new__(cls, x, y):
-        assert isinstance(x, int)
-        assert isinstance(y, int)
-        return super(Grid, cls).__new__(cls, [x, y])
+class Grid(object):
+    __slots__ = ['x', 'y']
 
-    def x(self):
-        return self[0]
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-    def y(self):
-        return self[1]
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+    def __eq__(self, o):
+        return self.x == o.x and self.y == o.y
 
 
 G = Grid
@@ -70,9 +71,9 @@ class Block(frozenset):
             if len(self) == 1:
                 self.adj = '小'
             elif len(self) == 2:
-                if len(set(g[0] for g in self)) == 1:
+                if len(set(g.x for g in self)) == 1:
                     self.adj = '站'
-                elif len(set(g[1] for g in self)) == 1:
+                elif len(set(g.y for g in self)) == 1:
                     self.adj = '矮'
                 else:
                     self.adj = '分'
@@ -103,7 +104,7 @@ L = Layout
 
 
 def move_to(grid: Grid, move: Move) -> Grid:
-    return G(grid[0] + move[0], grid[1] + move[1])
+    return G(grid.x + move[0], grid.y + move[1])
 
 
 class Game(object):
@@ -140,7 +141,7 @@ class Game(object):
         # x, y 超边界不行
         for block in layout:
             for grid in block:
-                x, y = grid
+                x, y = grid.x, grid.y
 
                 if x < 0 or x >= game.width:
                     return False
@@ -189,6 +190,7 @@ def solve(game):
     print('正在搜索 请稍候')
 
     while layout_q:
+        print(len(layout_q))
         cur_layout = layout_q.pop(0)
 
         if game.is_done(cur_layout):
