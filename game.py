@@ -190,7 +190,6 @@ def solve(game):
     print('正在搜索 请稍候')
 
     while layout_q:
-        print(len(layout_q))
         cur_layout = layout_q.pop(0)
 
         if game.is_done(cur_layout):
